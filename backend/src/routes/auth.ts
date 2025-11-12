@@ -5,6 +5,7 @@ import {eq} from "drizzle-orm";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv"
+import {auth, AuthRequest} from "../middleware/auth";
 
 
 dotenv.config()
@@ -49,6 +50,7 @@ authRouter.post("/signup", async (req: Request<{}, {}, SignUpBody>, res: Respons
         }
 
         const [user] = await db.insert(users).values(newUser).returning();
+
         res.status(201).json(user);
 
 
@@ -80,7 +82,7 @@ authRouter.post("/login", async (req: Request<{}, {}, LoginBody>, res: Response)
             res.status(400).json({msg: "Incorrect password"})
             return;
         }
-        const token = jwt.sign({id: existingUser.id}, process.env.JWT_KEY!);
+        const token = jwt.sign({id: existingUser.id}, process.env.JWT_KEY as string);
         res.json({token, ...existingUser});
 
 
@@ -97,12 +99,14 @@ authRouter.post('/tokenIsValid', async (req, res) => {
             return;
         }
         // verify the token is valid
-        const verified = jwt.verify(token!, process.env.JWT_KEY!)
+        const verified = jwt.verify(token, process.env.JWT_KEY!);
+
 
         if (!verified) {
             res.json(false);
             return;
         }
+
         // get user data if the token is valid
 
         const verifiedToken = verified as { id: string };
@@ -120,8 +124,18 @@ authRouter.post('/tokenIsValid', async (req, res) => {
     }
 });
 
-authRouter.get('/', (req, res) => {
-    res.send("hey there auth router");
+authRouter.get('/', auth, async (req: AuthRequest, res) => {
+    try {
+        if (!req.user) {
+            res.status(401).json({msg: "User not found "});
+            return;
+        }
+        const [user] = await db.select().from(users).where(eq(users.id, req.user));
+        res.json({...user, token: req.token});
+
+    } catch (e) {
+        res.status(500).json(false)
+    }
 })
 
 export default authRouter;
