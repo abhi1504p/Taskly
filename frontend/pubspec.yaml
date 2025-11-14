@@ -41,6 +41,7 @@ dependencies:
   sqflite:
   path:
   intl:
+  flex_color_picker:
 
 dev_dependencies:
   flutter_test:

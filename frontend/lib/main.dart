@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:frontend/features/auth/cubit/auth_cubit.dart';
 import 'package:frontend/features/auth/pages/signup_page.dart';
+import 'package:frontend/features/home/cubit/add_new_task_cubit.dart';
 import 'package:frontend/features/home/pages/home_page.dart';
 
 void main() {
   runApp(
     MultiBlocProvider(
-      providers: [BlocProvider(create: (_) => AuthCubit())],
+      providers: [
+        BlocProvider(create: (_) => AuthCubit()),
+        BlocProvider(create: (_) => AddNewTaskCubit()),
+      ],
       child: MyApp(),
     ),
   );
@@ -26,7 +30,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     // TODO: implement initState
-      context.read<AuthCubit>().getUserData();
+    context.read<AuthCubit>().getUserData();
     super.initState();
   }
 

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 class AppInputField extends StatelessWidget {
   final String? hint;
+  final int? maxlines;
   final String? labeltext;
   final String? Function(String?)? validate;
   final void Function(String)? onChanged;
@@ -30,6 +31,7 @@ class AppInputField extends StatelessWidget {
     this.inputFormatters,
     this.obscureTexts,
     this.validate,
+    this.maxlines,
 
     super.key,
   });
@@ -42,6 +44,7 @@ class AppInputField extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: TextFormField(
+        maxLines: maxlines,
         validator:validate ,
         obscureText: obscureTexts!,
         controller: controller,
