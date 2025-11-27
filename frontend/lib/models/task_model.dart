@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:frontend/core/widget/app_color.dart';
 
 class TaskModel {
@@ -7,12 +6,11 @@ class TaskModel {
   final String uid;
   final String title;
   final String description;
-  final String createdAt;
-  final String updatedAt;
-  final String dueAt;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime dueAt;
   final Color color;
 
-  //<editor-fold desc="Data Methods">
   const TaskModel({
     required this.id,
     required this.uid,
@@ -27,15 +25,16 @@ class TaskModel {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is TaskModel &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          uid == other.uid &&
-          title == other.title &&
-          description == other.description &&
-          createdAt == other.createdAt &&
-          updatedAt == other.updatedAt &&
-          dueAt == other.dueAt&&color==other.color);
+          (other is TaskModel &&
+              runtimeType == other.runtimeType &&
+              id == other.id &&
+              uid == other.uid &&
+              title == other.title &&
+              description == other.description &&
+              createdAt == other.createdAt &&
+              updatedAt == other.updatedAt &&
+              dueAt == other.dueAt &&
+              color == other.color);
 
   @override
   int get hashCode =>
@@ -45,20 +44,20 @@ class TaskModel {
       description.hashCode ^
       createdAt.hashCode ^
       updatedAt.hashCode ^
-      dueAt.hashCode^
-      color.hashCode    ;
+      dueAt.hashCode ^
+      color.hashCode;
 
   @override
   String toString() {
-    return 'TaskModel{' +
-        ' id: $id,' +
-        ' uid: $uid,' +
-        ' title: $title,' +
-        ' description: $description,' +
-        ' createdAt: $createdAt,' +
-        ' updatedAt: $updatedAt,' +
-        ' dueAt: $dueAt,' +
-        'color:$color,'+
+    return 'TaskModel{'
+        ' id: $id,'
+        ' uid: $uid,'
+        ' title: $title,'
+        ' description: $description,'
+        ' createdAt: $createdAt,'
+        ' updatedAt: $updatedAt,'
+        ' dueAt: $dueAt,'
+        ' color: $color,'
         '}';
   }
 
@@ -67,9 +66,9 @@ class TaskModel {
     String? uid,
     String? title,
     String? description,
-    String? createdAt,
-    String? updatedAt,
-    String? dueAt,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    DateTime? dueAt,
     Color? color,
   }) {
     return TaskModel(
@@ -80,35 +79,39 @@ class TaskModel {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       dueAt: dueAt ?? this.dueAt,
-      color: color?? this.color
+      color: color ?? this.color,
     );
   }
 
+  // -------------------------
+  //  TO MAP (ISO FORMATTED)
+  // -------------------------
   Map<String, dynamic> toMap() {
     return {
-      'id': this.id,
-      'uid': this.uid,
-      'title': this.title,
-      'description': this.description,
-      'createdAt': this.createdAt,
-      'updatedAt': this.updatedAt,
-      'dueAt': this.dueAt,
-      'color':rgnToHex(color),
+      'id': id,
+      'uid': uid,
+      'title': title,
+      'description': description,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+      'dueAt': dueAt.toIso8601String(),
+      'hexColor': rgnToHex(color),
     };
   }
 
+  // -------------------------
+  //  FROM MAP (PARSE ISO)
+  // -------------------------
   factory TaskModel.fromMap(Map<String, dynamic> map) {
     return TaskModel(
-      id: map['id'] ??  " ",
-      uid: map['uid'] ??  " ",
-      title: map['title'] ??  " ",
-      description: map['description'] ??  " ",
-      createdAt: map['createdAt'],
-      updatedAt: map['updatedAt'] ,
-      dueAt: map['dueAt'] ,
+      id: map['id'] ?? "",
+      uid: map['uid'] ?? "",
+      title: map['title'] ?? "",
+      description: map['description'] ?? "",
+      createdAt: DateTime.parse(map['createdAt']),
+      updatedAt: DateTime.parse(map['updatedAt']),
+      dueAt: DateTime.parse(map['dueAt']),
       color: hexToRgb(map['hexColor']),
     );
   }
-
-  //</editor-fold>
 }

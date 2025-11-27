@@ -1,4 +1,5 @@
 import {Router, Request, Response} from "express";
+
 import {db} from "../db";
 import {NewUser, users} from "../db/schema";
 import {eq} from "drizzle-orm";
@@ -64,6 +65,7 @@ authRouter.post("/login", async (req: Request<{}, {}, LoginBody>, res: Response)
     try {
         //get req body
         const {email, password} = req.body;
+        console.log(req.body)
 
         //check if user does not exist
         const [existingUser] = await db.select().from(users).where(eq(users.email, email));

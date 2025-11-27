@@ -21,14 +21,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
+  DateTime selectedDate = DateTime.now();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    final user=context.read<AuthCubit>().state as AuthLoggedIn;
+    final user = context.read<AuthCubit>().state as AuthLoggedIn;
+
     context.read<AddNewTaskCubit>().getAllTask(token: user.user.token);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,11 +55,23 @@ class _HomePageState extends State<HomePage> {
             return Center(child: Text(state.error));
           }
           if (state is GetTaskSuccess) {
-            final tasks = state.tasks;
-            Column(
+
+            final tasks = state.tasks.where((elem) {
+              final due = DateTime.parse(elem.dueAt.toString());  // convert String → DateTime
+
+              return due.day == selectedDate.day &&
+                  due.month == selectedDate.month &&
+                  due.year == selectedDate.year;
+            }).toList();
+
+            return Column(
               children: [
                 // date selector
-                DateSelector(),
+                DateSelector(selectedDate: selectedDate,onTap: (date){
+                  setState(() {
+                      selectedDate=date;
+                  });
+                },),
 
                 Expanded(
                   child: ListView.builder(
@@ -70,8 +84,7 @@ class _HomePageState extends State<HomePage> {
                             child: TaskCard(
                               color: task.color,
                               headerText: task.title,
-                              descriptionText:
-                                 task.description,
+                              descriptionText: task.description,
                             ),
                           ),
                           Container(
@@ -79,16 +92,17 @@ class _HomePageState extends State<HomePage> {
                             width: 10,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: strengthColor(
-                                task.color,
-                                0.69,
+                              color: strengthColor(task.color, 0.69),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: AppText.highlight(
+                              DateFormat.jm().format(
+                                DateTime.parse(task.dueAt.toString()),
                               ),
                             ),
                           ),
-                          // Padding(
-                          //   padding:  EdgeInsets.all(10.0),
-                          //   child: AppText.highlight(DateFormat.jm().format(task.dueAt )),
-                          // ),
                         ],
                       );
                     },

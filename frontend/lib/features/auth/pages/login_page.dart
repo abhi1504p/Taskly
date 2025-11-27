@@ -61,6 +61,11 @@ class _SignInPageState extends State<SignInPage> {
             if (state is AuthLoading) {
               return Center(child: CircularProgressIndicator());
             }
+
+
+
+
+
             return Padding(
               padding: const EdgeInsets.all(15.0),
               child: Form(
@@ -70,7 +75,6 @@ class _SignInPageState extends State<SignInPage> {
                   children: [
                     AppText.heading("Login", fontSize: 45),
                     SizedBox(height: 35),
-
                     AppInputField(
                       validate: (value) {
                         if (value == null ||
@@ -101,6 +105,7 @@ class _SignInPageState extends State<SignInPage> {
                       labeltext: "Password",
                       controller: passwordController,
                       keyboardType: TextInputType.text,
+                      maxlines: 1,
                     ),
                     SizedBox(height: 12),
                     AppButton(

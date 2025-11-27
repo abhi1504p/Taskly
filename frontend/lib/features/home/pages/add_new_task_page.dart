@@ -6,6 +6,7 @@ import 'package:frontend/core/widget/app_input_field.dart';
 import 'package:frontend/core/widget/app_text.dart';
 import 'package:frontend/features/auth/cubit/auth_cubit.dart';
 import 'package:frontend/features/home/cubit/add_new_task_cubit.dart';
+import 'package:frontend/features/home/pages/home_page.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -88,7 +89,8 @@ class _AddNewTaskPageState extends State<AddNewTaskPage> {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text("Task add Successfully")));
-            Navigator.pop(context);
+            Navigator.pushAndRemoveUntil(context,
+                HomePage.route(), (_)=>false);
           }
         },
         builder: (context, state) {

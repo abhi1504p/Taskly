@@ -3,10 +3,9 @@ class UserModel {
     final String email;
     final String name;
     final String token;
-    final String createdAt;
-    final String updatedAt;
+    final DateTime createdAt;
+    final DateTime updatedAt;
 
-    //<editor-fold desc="Data Methods">
     const UserModel({
         required this.id,
         required this.email,
@@ -17,20 +16,20 @@ class UserModel {
     });
 
     @override
-    bool operator==(Object other) =>
-    identical(this, other) ||
-        (other is UserModel &&
-            runtimeType == other.runtimeType &&
-            id == other.id &&
-            email == other.email &&
-            name == other.name &&
-            token == other.token &&
-            createdAt == other.createdAt &&
-            updatedAt == other.updatedAt);
+    bool operator ==(Object other) =>
+        identical(this, other) ||
+            (other is UserModel &&
+                runtimeType == other.runtimeType &&
+                id == other.id &&
+                email == other.email &&
+                name == other.name &&
+                token == other.token &&
+                createdAt == other.createdAt &&
+                updatedAt == other.updatedAt);
 
     @override
     int get hashCode =>
-    id.hashCode ^
+        id.hashCode ^
         email.hashCode ^
         name.hashCode ^
         token.hashCode ^
@@ -39,13 +38,13 @@ class UserModel {
 
     @override
     String toString() {
-        return 'UserModel{' +
-            ' id: $id,' +
-            ' email: $email,' +
-            ' name: $name,' +
-            ' token: $token,' +
-            ' createdAt: $createdAt,' +
-            ' updatedAt: $updatedAt,' +
+        return 'UserModel{'
+            ' id: $id,'
+            ' email: $email,'
+            ' name: $name,'
+            ' token: $token,'
+            ' createdAt: $createdAt,'
+            ' updatedAt: $updatedAt,'
             '}';
     }
 
@@ -54,8 +53,8 @@ class UserModel {
         String? email,
         String? name,
         String? token,
-        String? createdAt,
-        String? updatedAt,
+        DateTime? createdAt,
+        DateTime? updatedAt,
     }) {
         return UserModel(
             id: id ?? this.id,
@@ -67,26 +66,26 @@ class UserModel {
         );
     }
 
+    // ------------ ISO8601 FORMAT ------------
     Map<String, dynamic> toMap() {
         return {
-            'id': this.id,
-            'email': this.email,
-            'name': this.name,
-            'token': this.token,
-            'createdAt': this.createdAt,
-            'updatedAt': this.updatedAt,
+            'id': id,
+            'email': email,
+            'name': name,
+            'token': token,
+            'createdAt': createdAt.toIso8601String(),
+            'updatedAt': updatedAt.toIso8601String(),
         };
     }
 
     factory UserModel.fromMap(Map<String, dynamic> map) {
         return UserModel(
-            id: map['id'] ??'',
-            email: map['email'] ??'',
-            name: map['name'] ??'',
-            token: map['token'] ??'',
-            createdAt: map['createdAt'] ,
-            updatedAt: map['updatedAt'] ,
+            id: map['id'] ?? '',
+            email: map['email'] ?? '',
+            name: map['name'] ?? '',
+            token: map['token'] ?? '',
+            createdAt: DateTime.parse(map['createdAt']),
+            updatedAt: DateTime.parse(map['updatedAt']),
         );
     }
-    //</editor-fold>
 }

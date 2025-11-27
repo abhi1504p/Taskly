@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:frontend/core/constant/constant.dart';
 import 'package:frontend/core/services/sp_service.dart';
@@ -26,6 +27,8 @@ class AuthRemoteRepository {
         throw jsonDecode(res.body)['msg'];
       }
       return UserModel.fromMap(jsonDecode(res.body));
+    } on SocketException {
+      throw 'No Internet connection';
     } catch (e) {
       throw e.toString();
     }
@@ -45,8 +48,9 @@ class AuthRemoteRepository {
         throw jsonDecode(res.body)['msg'];
       }
       return UserModel.fromMap(jsonDecode(res.body));
+    } on SocketException {
+      throw 'No Internet connection';
     } catch (e) {
-
       throw e.toString();
     }
   }
@@ -78,6 +82,7 @@ class AuthRemoteRepository {
       return UserModel.fromMap(jsonDecode(userResponse.body));
     } catch (e) {
       final user=await authLocalRepository.getUser();
+      print(user);
       return user;
     }
   }

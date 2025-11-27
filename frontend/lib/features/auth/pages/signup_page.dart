@@ -61,7 +61,7 @@ class _SignupPageState extends State<SignupPage> {
           },
           builder: (context, state) {
             if (state is AuthLoading) {
-              return Center(child: CircularProgressIndicator());
+              return Center(child: CircularProgressIndicator(color: Colors.red,));
             }
             return Padding(
               padding: const EdgeInsets.all(15.0),
@@ -116,6 +116,7 @@ class _SignupPageState extends State<SignupPage> {
                       labeltext: "Password",
                       controller: passwordController,
                       keyboardType: TextInputType.text,
+                      maxlines: 1,
                     ),
                     SizedBox(height: 12),
                     AppButton(

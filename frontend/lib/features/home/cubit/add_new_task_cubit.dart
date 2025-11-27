@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
 import 'package:frontend/core/widget/app_color.dart';
+import 'package:frontend/features/home/repository/task_local_repository.dart';
 import 'package:frontend/features/home/repository/task_remote_repository.dart';
 
 import 'package:frontend/models/task_model.dart';
@@ -12,6 +13,7 @@ class AddNewTaskCubit extends Cubit<AddNewTaskState> {
   AddNewTaskCubit() : super(AddNewTaskInitial());
 
   final taskRemoteRepository = TaskRemoteRepository();
+  final taskLocalRepository= TaskLocalRepository();
 
   Future<void> createNewTask({
     required String title,
@@ -29,6 +31,7 @@ class AddNewTaskCubit extends Cubit<AddNewTaskState> {
         token: token,
         dueAt: dueAt,
       );
+      await taskLocalRepository.insertTask(taskModel);
       emit(AddNewTaskSuccess(taskModel));
     } catch (e) {
       emit(AddNewTaskError(e.toString()));
