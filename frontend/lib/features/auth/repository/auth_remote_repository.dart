@@ -42,6 +42,7 @@ class AuthRemoteRepository {
         Uri.parse('${Constants.backendUri}/auth/login'),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({'email': email, 'password': password}),
+
       );
 
       if (res.statusCode != 200) {
@@ -82,7 +83,7 @@ class AuthRemoteRepository {
       return UserModel.fromMap(jsonDecode(userResponse.body));
     } catch (e) {
       final user=await authLocalRepository.getUser();
-      print(user);
+
       return user;
     }
   }

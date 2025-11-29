@@ -10,10 +10,13 @@ import 'package:frontend/features/home/pages/home_page.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import 'core/constant/constant.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
- 
+  await Constants.init();
+
 
   runApp(
     MultiBlocProvider(
